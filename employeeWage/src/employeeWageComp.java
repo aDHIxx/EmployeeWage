@@ -32,26 +32,21 @@ public class employeeWageComp {
         int attendanceStatus = generateAttendance();
         int hoursWorked = 0;
 
-        if (attendanceStatus == FULL_TIME) {
-
-            System.out.println("Employee is Present - Full Time");
-
-            hoursWorked = FULL_TIME_HOURS;
-            double dailyWage = calculateDailyWage(hoursWorked);
-
-            System.out.println("Daily Employee Wage: " + dailyWage);
-
-        } else if (attendanceStatus == PART_TIME) {
-
-            System.out.println("Employee is Present - Part Time");
-
-            hoursWorked = PART_TIME_HOURS;
-            double dailyWage = calculateDailyWage(hoursWorked);
-
-            System.out.println("Daily Employee Wage: " + dailyWage);
-
-        } else {
-            System.out.println("Employee is Absent");
+        switch (attendanceStatus) {
+            case FULL_TIME:
+                System.out.println("Employee is Present - Full Time");
+                hoursWorked = FULL_TIME_HOURS;
+                double dailyWage = calculateDailyWage(hoursWorked);
+                System.out.println("Daily Employee Wage: " + dailyWage);
+                break;
+            case PART_TIME:
+                System.out.println("Employee is Present - Part Time");
+                hoursWorked = PART_TIME_HOURS;
+                double dailyWages = calculateDailyWage(hoursWorked);
+                System.out.println("Daily Employee Wage: " + dailyWages);
+                break;
+            default:
+                System.out.println("Employee is Absent");
         }
 
     }
