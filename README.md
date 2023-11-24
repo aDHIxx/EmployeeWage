@@ -9,3 +9,5 @@
 | UC4 | Check Employee is Present or Absent. | [UC4](https://github.com/aDHIxx/EmployeeWage/blob/UC4_UC3_Using_Switch_Case/employeeWage/src/employeeWageComp.java) |
 | UC5 | Compare Lines using equals | [UC5](https://github.com/aDHIxx/EmployeeWage/blob/UC5_Employee_FullTime_PartTime_Monthly_Employee_Wage/employeeWage/src/employeeWageComp.java) |
 | UC6 | Custom Compare (Using compareTo) | [UC6](https://github.com/aDHIxx/EmployeeWage/blob/UC6_Monthly_Wage_Until_Max_Working_Days_or_Hours/employeeWage/src/employeeWageComp.java) |
+| UC7 | Refactor the Code to write a Class Method to Compute Employee Wage| [UC7](https://github.com/aDHIxx/EmployeeWage/tree/UC7_Refactor_to_Class_Method_To_Compute_Employee_Wage) |
+| UC8 | Compute Employee Wage for multiple companies| [UC8](https://github.com/aDHIxx/EmployeeWage/tree/UC8_Compute_Employee_Wage_For_Multiple_Companies) |
