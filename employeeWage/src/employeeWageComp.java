@@ -5,26 +5,16 @@ import java.util.Random;
     * @desc: calculates the monthly wage of an employee
 */
 public class employeeWageComp {
-    private static final int FULL_TIME = 1;
-    private static final int PART_TIME = 2;
-    private static final int HOURLY_WAGE = 20;
-    private static final int FULL_TIME_HOURS = 8;
-    private static final int PART_TIME_HOURS = 4;
-    private static final int MAX_WORKING_HOURS = 100;
-    private static final int MAX_WORKING_DAYS = 20;
-
-    private double totalWage = 0;
-    private int totalWorkingHours = 0;
-    private int totalWorkingDays = 0;
 
     /*
      * @name: calculateDailyWage
      * @desc: calculates the daily wage of an employee
      * @i/p: hoursWorked - the number of hours worked by the employee
+     *       hourlyWage - the hourly wage for the employee
      * @return/ o/p: the calculated daily wage
      */
-    private double calculateDailyWage(int hoursWorked) {
-        return hoursWorked * HOURLY_WAGE;
+    private static double calculateDailyWage(int hoursWorked, int hourlyWage) {
+        return hoursWorked * hourlyWage;
     }
 
     /*
@@ -33,35 +23,44 @@ public class employeeWageComp {
      * @i/p: none
      * @return/ o/p: the attendance status of an employee (full time : 1, part time: 2, or absent: 0)
      */
-    private int generateAttendance() {
+    private static int generateAttendance() {  //making it static to access it from computeMonthlyWage bcz it is static
         return new Random().nextInt(3) + 1;
     }
 
     /*
      * @name: computeMonthlyWage
      * @desc: computes the monthly wage of an employee
-     * @param: none
-     * @return/ o/p: the total monthly wage, working hours, and working days
+     * @i/p: maxWorkingHours - the maximum working hours per month
+     *       maxWorkingDays - the maximum working days per month
+     *       fullTimeHours - the number of hours for full-time work
+     *       partTimeHours - the number of hours for part-time work
+     *       hourlyWage - the hourly wage for the employee
+     * @return/ o/p: none
      */
-    public void computeMonthlyWage() {
-        while (totalWorkingHours < MAX_WORKING_HOURS && totalWorkingDays < MAX_WORKING_DAYS) {
+    private static void computeMonthlyWage(int maxWorkingHours, int maxWorkingDays,
+                                           int fullTimeHours, int partTimeHours, int hourlyWage) {
+        double totalWage = 0;
+        int totalWorkingHours = 0;
+        int totalWorkingDays = 0;
+
+        while (totalWorkingHours < maxWorkingHours && totalWorkingDays < maxWorkingDays) {
             int attendanceStatus = generateAttendance();
             int hoursWorked = 0;
 
             switch (attendanceStatus) {
-                case FULL_TIME:
+                case 1:
                     System.out.println("Day " + (totalWorkingDays + 1) + ": Employee is Present - Full Time");
-                    hoursWorked = FULL_TIME_HOURS;
+                    hoursWorked = fullTimeHours;
                     break;
-                case PART_TIME:
+                case 2:
                     System.out.println("Day " + (totalWorkingDays + 1) + ": Employee is Present - Part Time");
-                    hoursWorked = PART_TIME_HOURS;
+                    hoursWorked = partTimeHours;
                     break;
                 default:
                     System.out.println("Day " + (totalWorkingDays + 1) + ": Employee is Absent");
             }
 
-            totalWage += calculateDailyWage(hoursWorked);
+            totalWage += calculateDailyWage(hoursWorked, hourlyWage);
             totalWorkingHours += hoursWorked;
             totalWorkingDays++;
         }
@@ -74,8 +73,14 @@ public class employeeWageComp {
 
     public static void main(String[] args) {
         System.out.println("Welcome to Employee Wage Computation Program");
-        // Create an object of employeeWageComp class
-        employeeWageComp wageCalculator = new employeeWageComp();
-        wageCalculator.computeMonthlyWage();
+        System.out.println("----------------------------------------------");
+        System.out.println("-----------------------------------------");
+        System.out.println("| Monthly Wage Computation for Company A |");
+        System.out.println("-----------------------------------------");
+        computeMonthlyWage(100, 20, 8, 4, 20);
+        System.out.println("-----------------------------------------");
+        System.out.println("| Monthly Wage Computation for Company B |");
+        System.out.println("-----------------------------------------");
+        computeMonthlyWage(120, 25, 9, 5, 25);
     }
 }
