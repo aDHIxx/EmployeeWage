@@ -18,6 +18,7 @@ interface EmpWageInterface {
      */
     void addCompany(String companyName, int maxWorkingHours, int maxWorkingDays, int fullTimeHours, int partTimeHours, int hourlyWage);
     void computeMonthlyWage();
+    double getTotalWageByCompany(String companyName);
 }
 
 class CompanyEmpWage {
@@ -89,6 +90,7 @@ class EmpWageBuilder implements EmpWageInterface {
     public EmpWageBuilder() {
         companies = new ArrayList<>();
     }
+
     /*
      *@name: addCompany
      *@desc: Adds a company to the list of companies
@@ -102,6 +104,7 @@ class EmpWageBuilder implements EmpWageInterface {
     public void addCompany(String companyName, int maxWorkingHours, int maxWorkingDays, int fullTimeHours, int partTimeHours, int hourlyWage) {
         companies.add(new CompanyEmpWage(companyName, maxWorkingHours, maxWorkingDays, fullTimeHours, partTimeHours, hourlyWage));
     }
+
     /*
      *@name: generateAttendance
      *@desc: Generates a random number between 1 and 3
@@ -112,6 +115,7 @@ class EmpWageBuilder implements EmpWageInterface {
     private int generateAttendance() {
         return new Random().nextInt(3) + 1;
     }
+
     /*
      *@name: calculateDailyWage
      *@desc: Calculates the daily wage of the employee
@@ -121,52 +125,75 @@ class EmpWageBuilder implements EmpWageInterface {
     private double calculateDailyWage(int hoursWorked, int hourlyWage) {
         return hoursWorked * hourlyWage;
     }
+
     /*
      *@name: computeMonthlyWage
      *@desc: Computes the monthly wage of the employee
      */
-    public void computeMonthlyWage() {
-        final int FULL_TIME = 1;
-        final int PART_TIME = 2;
-
+    public double getTotalWageByCompany(String companyName) {
         for (CompanyEmpWage company : companies) {
-            double totalWage = 0;
-            int totalWorkingHours = 0;
-            int totalWorkingDays = 0;
-
-            System.out.println("Company: " + company.getCompanyName());
-            while (totalWorkingHours < company.getMaxWorkingHours() && totalWorkingDays < company.getMaxWorkingDays()) {
-                int attendanceStatus = generateAttendance();
-                int hoursWorked = 0;
-
-                switch (attendanceStatus) {
-                    case FULL_TIME:
-                        System.out.println("Day " + (totalWorkingDays + 1) + ": Employee is Present - Full Time");
-                        hoursWorked = company.getFullTimeHours();
-                        break;
-                    case PART_TIME:
-                        System.out.println("Day " + (totalWorkingDays + 1) + ": Employee is Present - Part Time");
-                        hoursWorked = company.getPartTimeHours();
-                        break;
-                    default:
-                        System.out.println("Day " + (totalWorkingDays + 1) + ": Employee is Absent");
-                }
-
-                double dailyWage = calculateDailyWage(hoursWorked, company.getHourlyWage());
-                company.addDailyWage(dailyWage);
-
-                totalWorkingHours += hoursWorked;
-                totalWorkingDays++;
+            if (company.getCompanyName().equals(companyName)) {
+                // Call computeMonthlyWage with a flag indicating only total wage calculation
+                return computeMonthlyWage(true, company);
             }
+        }
+        return 0; // Return 0 if the company is not found
+    }
 
-            System.out.println("Total Monthly Employee Wage: " + company.getTotalWage());
-            System.out.println("Total Working Hours: " + totalWorkingHours);
-            System.out.println("Total Working Days: " + totalWorkingDays);
-            System.out.println("Daily Wages: " + company.getDailyWages());
-            System.out.println("-------------------------");
+    public void computeMonthlyWage() {
+        for (CompanyEmpWage company : companies) {
+            computeMonthlyWage(false, company);
         }
     }
+
+    private double computeMonthlyWage(boolean onlyTotalWage, CompanyEmpWage company) {
+        System.out.println("Company: " + company.getCompanyName());
+        System.out.println("-------------------------");
+        final int FULL_TIME = 1;
+        final int PART_TIME = 2;
+        double totalWage = 0;
+        int totalWorkingHours = 0;
+        int totalWorkingDays = 0;
+
+        while (totalWorkingHours < company.getMaxWorkingHours() && totalWorkingDays < company.getMaxWorkingDays()) {
+            int attendanceStatus = generateAttendance();
+            int hoursWorked = 0;
+
+            switch (attendanceStatus) {
+                case FULL_TIME:
+                    hoursWorked = company.getFullTimeHours();
+                    break;
+                case PART_TIME:
+                    hoursWorked = company.getPartTimeHours();
+                    break;
+                default:
+                    hoursWorked = 0;
+            }
+
+            double dailyWage = calculateDailyWage(hoursWorked, company.getHourlyWage());
+            company.addDailyWage(dailyWage);  // Add daily wage to the list
+
+            totalWage += dailyWage;
+
+            totalWorkingHours += hoursWorked;
+            totalWorkingDays++;
+        }
+
+        if (!onlyTotalWage) {
+            System.out.println("Company: " + company.getCompanyName());
+            System.out.println("Total Monthly Employee Wage: " + totalWage);
+            System.out.println("Total Working Hours: " + totalWorkingHours);
+            System.out.println("Total Working Days: " + totalWorkingDays);
+            System.out.println("-------------------------");
+        }
+
+        return totalWage;
+    }
+
 }
+
+
+
 
 public class employeeWageComp {
 
@@ -177,11 +204,11 @@ public class employeeWageComp {
 
         EmpWageInterface empWageBuilder = new EmpWageBuilder();
         empWageBuilder.addCompany("Company A", 100, 20, 8, 4, 20);
-        System.out.println("----------------------------------------------");
         empWageBuilder.addCompany("Company B", 120, 25, 9, 5, 25);
         // Add more companies as needed
 
-        empWageBuilder.computeMonthlyWage();
+        double totalWageForCompanyA = empWageBuilder.getTotalWageByCompany("Company A");
+        System.out.println("Total Wage for Company A: " + totalWageForCompanyA);
     }
 }
 
