@@ -1,163 +1,165 @@
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
-/*
- *@name: EmpWageInterface
- *@desc: Interface to add companies and compute monthly wage
- */
-interface EmpWageInterface {
     /*
-     *@name: addCompany
-     *@desc: Adds a company to the list of companies
-     *@param: companyName - Name of the company
-     *        maxWorkingHours - Maximum working hours per month
-     *        maxWorkingDays - Maximum working days per month
-     *        fullTimeHours - Number of hours considered full time
-     *        partTimeHours - Number of hours considered part time
-     *        hourlyWage - Hourly wage of the employee
+     *@name: EmpWageInterface
+     *@desc: Interface to add companies and compute monthly wage
      */
-    void addCompany(String companyName, int maxWorkingHours, int maxWorkingDays, int fullTimeHours, int partTimeHours, int hourlyWage);
-    void computeMonthlyWage();
-}
-
-class CompanyEmpWage {
-    private final String companyName;
-    private final int maxWorkingHours;
-    private final int maxWorkingDays;
-    private final int fullTimeHours;
-    private final int partTimeHours;
-    private final int hourlyWage;
-
-    public CompanyEmpWage(String companyName, int maxWorkingHours, int maxWorkingDays, int fullTimeHours, int partTimeHours, int hourlyWage) {
-        this.companyName = companyName;
-        this.maxWorkingHours = maxWorkingHours;
-        this.maxWorkingDays = maxWorkingDays;
-        this.fullTimeHours = fullTimeHours;
-        this.partTimeHours = partTimeHours;
-        this.hourlyWage = hourlyWage;
-    }
-    //getters
-    public String getCompanyName() {
-        return companyName;
+    interface EmpWageInterface {
+        /*
+         *@name: addCompany
+         *@desc: Adds a company to the list of companies
+         *@param: companyName - Name of the company
+         *        maxWorkingHours - Maximum working hours per month
+         *        maxWorkingDays - Maximum working days per month
+         *        fullTimeHours - Number of hours considered full time
+         *        partTimeHours - Number of hours considered part time
+         *        hourlyWage - Hourly wage of the employee
+         */
+        void addCompany(String companyName, int maxWorkingHours, int maxWorkingDays, int fullTimeHours, int partTimeHours, int hourlyWage);
+        void computeMonthlyWage();
     }
 
-    public int getMaxWorkingHours() {
-        return maxWorkingHours;
-    }
+    class CompanyEmpWage {
+        private final String companyName;
+        private final int maxWorkingHours;
+        private final int maxWorkingDays;
+        private final int fullTimeHours;
+        private final int partTimeHours;
+        private final int hourlyWage;
 
-    public int getMaxWorkingDays() {
-        return maxWorkingDays;
-    }
+        public CompanyEmpWage(String companyName, int maxWorkingHours, int maxWorkingDays, int fullTimeHours, int partTimeHours, int hourlyWage) {
+            this.companyName = companyName;
+            this.maxWorkingHours = maxWorkingHours;
+            this.maxWorkingDays = maxWorkingDays;
+            this.fullTimeHours = fullTimeHours;
+            this.partTimeHours = partTimeHours;
+            this.hourlyWage = hourlyWage;
+        }
+        //getters
+        public String getCompanyName() {
+            return companyName;
+        }
 
-    public int getFullTimeHours() {
-        return fullTimeHours;
-    }
+        public int getMaxWorkingHours() {
+            return maxWorkingHours;
+        }
 
-    public int getPartTimeHours() {
-        return partTimeHours;
-    }
+        public int getMaxWorkingDays() {
+            return maxWorkingDays;
+        }
 
-    public int getHourlyWage() {
-        return hourlyWage;
-    }
-}
+        public int getFullTimeHours() {
+            return fullTimeHours;
+        }
 
-class EmpWageBuilder implements EmpWageInterface {
-    private final CompanyEmpWage[] companies;
-    private int numCompanies;
+        public int getPartTimeHours() {
+            return partTimeHours;
+        }
 
-    public EmpWageBuilder() {
-        companies = new CompanyEmpWage[10]; // Assuming a maximum of 10 companies
-        numCompanies = 0;
-    }
-    /*
-     *@name: addCompany
-     *@desc: Adds a company to the list of companies
-     *@param: companyName, maxWorkingHours, maxWorkingDays, fullTimeHours, partTimeHours, hourlyWage
-     */
-    public void addCompany(String companyName, int maxWorkingHours, int maxWorkingDays, int fullTimeHours, int partTimeHours, int hourlyWage) {
-        if (numCompanies < 10) {
-            companies[numCompanies++] = new CompanyEmpWage(companyName, maxWorkingHours, maxWorkingDays, fullTimeHours, partTimeHours, hourlyWage);
-        } else {
-            System.out.println("Cannot add more companies. Maximum limit reached.");
+        public int getHourlyWage() {
+            return hourlyWage;
         }
     }
-    /*
-     *@name: generateAttendance
-     *@desc: Generates a random number between 1 and 3
-     *       1 - Full Time
-     *       2 - Part Time
-     *       3 - Absent
-     */
-    private int generateAttendance() {
-        return new Random().nextInt(3) + 1;
-    }
-    /*
-     *@name: calculateDailyWage
-     *@desc: Calculates the daily wage of the employee
-     *@param: hoursWorked - Number of hours worked
-     *        hourlyWage - Hourly wage of the employee
-     */
-    private double calculateDailyWage(int hoursWorked, int hourlyWage) {
-        return hoursWorked * hourlyWage;
-    }
-    /*
-     *@name: computeMonthlyWage
-     *@desc: Computes the monthly wage of the employee
-     */
-    public void computeMonthlyWage() {
-        final int FULL_TIME = 1;
-        final int PART_TIME = 2;
 
-        for (int i = 0; i < numCompanies; i++) {
-            CompanyEmpWage company = companies[i];
-            double totalWage = 0;
-            int totalWorkingHours = 0;
-            int totalWorkingDays = 0;
+    class EmpWageBuilder implements EmpWageInterface {
+        private final List<CompanyEmpWage> companies;
 
-            System.out.println("Company: " + company.getCompanyName());
-            while (totalWorkingHours < company.getMaxWorkingHours() && totalWorkingDays < company.getMaxWorkingDays()) {
-                int attendanceStatus = generateAttendance();
-                int hoursWorked = 0;
+        public EmpWageBuilder() {
+            companies = new ArrayList<>();
+        }
+        /*
+         *@name: addCompany
+         *@desc: Adds a company to the list of companies
+         *@param: companyName - Name of the company
+         *        maxWorkingHours - Maximum working hours per month
+         *        maxWorkingDays - Maximum working days per month
+         *        fullTimeHours - Number of hours considered full time
+         *        partTimeHours - Number of hours considered part time
+         *        hourlyWage - Hourly wage of the employee
+         */
+        public void addCompany(String companyName, int maxWorkingHours, int maxWorkingDays, int fullTimeHours, int partTimeHours, int hourlyWage) {
+            companies.add(new CompanyEmpWage(companyName, maxWorkingHours, maxWorkingDays, fullTimeHours, partTimeHours, hourlyWage));
+        }
+        /*
+         *@name: generateAttendance
+         *@desc: Generates a random number between 1 and 3
+         *       1 - Full Time
+         *       2 - Part Time
+         *       3 - Absent
+         */
+        private int generateAttendance() {
+            return new Random().nextInt(3) + 1;
+        }
+        /*
+         *@name: calculateDailyWage
+         *@desc: Calculates the daily wage of the employee
+         *@param: hoursWorked - Number of hours worked
+         *        hourlyWage - Hourly wage of the employee
+         */
+        private double calculateDailyWage(int hoursWorked, int hourlyWage) {
+            return hoursWorked * hourlyWage;
+        }
+        /*
+         *@name: computeMonthlyWage
+         *@desc: Computes the monthly wage of the employee
+         */
+        public void computeMonthlyWage() {
+            final int FULL_TIME = 1;
+            final int PART_TIME = 2;
 
-                switch (attendanceStatus) {
-                    case FULL_TIME:
-                        System.out.println("Day " + (totalWorkingDays + 1) + ": Employee is Present - Full Time");
-                        hoursWorked = company.getFullTimeHours();
-                        break;
-                    case PART_TIME:
-                        System.out.println("Day " + (totalWorkingDays + 1) + ": Employee is Present - Part Time");
-                        hoursWorked = company.getPartTimeHours();
-                        break;
-                    default:
-                        System.out.println("Day " + (totalWorkingDays + 1) + ": Employee is Absent");
+            for (CompanyEmpWage company : companies) {
+                double totalWage = 0;
+                int totalWorkingHours = 0;
+                int totalWorkingDays = 0;
+
+                System.out.println("Company: " + company.getCompanyName());
+                while (totalWorkingHours < company.getMaxWorkingHours() && totalWorkingDays < company.getMaxWorkingDays()) {
+                    int attendanceStatus = generateAttendance();
+                    int hoursWorked = 0;
+
+                    switch (attendanceStatus) {
+                        case FULL_TIME:
+                            System.out.println("Day " + (totalWorkingDays + 1) + ": Employee is Present - Full Time");
+                            hoursWorked = company.getFullTimeHours();
+                            break;
+                        case PART_TIME:
+                            System.out.println("Day " + (totalWorkingDays + 1) + ": Employee is Present - Part Time");
+                            hoursWorked = company.getPartTimeHours();
+                            break;
+                        default:
+                            System.out.println("Day " + (totalWorkingDays + 1) + ": Employee is Absent");
+                    }
+
+                    totalWage += calculateDailyWage(hoursWorked, company.getHourlyWage());
+                    totalWorkingHours += hoursWorked;
+                    totalWorkingDays++;
                 }
 
-                totalWage += calculateDailyWage(hoursWorked, company.getHourlyWage());
-                totalWorkingHours += hoursWorked;
-                totalWorkingDays++;
+                System.out.println("Total Monthly Employee Wage: " + totalWage);
+                System.out.println("Total Working Hours: " + totalWorkingHours);
+                System.out.println("Total Working Days: " + totalWorkingDays);
+                System.out.println("-------------------------");
             }
-
-            System.out.println("Total Monthly Employee Wage: " + totalWage);
-            System.out.println("Total Working Hours: " + totalWorkingHours);
-            System.out.println("Total Working Days: " + totalWorkingDays);
-            System.out.println("-------------------------");
         }
     }
-}
 
-public class employeeWageComp {
+    public class employeeWageComp {
 
-    public static void main(String[] args) {
-        System.out.println("----------------------------------------------");
-        System.out.println("Welcome to Employee Wage Computation Program");
-        System.out.println("----------------------------------------------");
+        public static void main(String[] args) {
+            System.out.println("----------------------------------------------");
+            System.out.println("Welcome to Employee Wage Computation Program");
+            System.out.println("----------------------------------------------");
 
-        EmpWageInterface empWageBuilder = new EmpWageBuilder();
-        empWageBuilder.addCompany("Company A", 100, 20, 8, 4, 20);
-        System.out.println("----------------------------------------------");
-        empWageBuilder.addCompany("Company B", 120, 25, 9, 5, 25);
-        // Add more companies as needed
+            EmpWageInterface empWageBuilder = new EmpWageBuilder();
+            empWageBuilder.addCompany("Company A", 100, 20, 8, 4, 20);
+            System.out.println("----------------------------------------------");
+            empWageBuilder.addCompany("Company B", 120, 25, 9, 5, 25);
+            // Add more companies as needed
 
-        empWageBuilder.computeMonthlyWage();
+            empWageBuilder.computeMonthlyWage();
+        }
     }
-}
+
+
 
