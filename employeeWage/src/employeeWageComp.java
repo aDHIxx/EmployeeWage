@@ -1,48 +1,54 @@
 import java.util.Random;
 
 /*
-    * @name: employeeWageComp
-    * @desc: calculates the monthly wage of an employee
-*/
-public class employeeWageComp {
+ *@description: Employee Wage Computation Program
+ */
+class EmpWageBuilder {
+    private final int maxWorkingHours;
+    private final int maxWorkingDays;
+    private final int fullTimeHours;
+    private final int partTimeHours;
+    private final int hourlyWage;
+    private double totalWage;
+    private int totalWorkingHours;
+    private int totalWorkingDays;
 
     /*
-     * @name: calculateDailyWage
-     * @desc: calculates the daily wage of an employee
-     * @i/p: hoursWorked - the number of hours worked by the employee
-     *       hourlyWage - the hourly wage for the employee
-     * @return/ o/p: the calculated daily wage
+     *@desc: Parameterized Constructor
+     *@param: maxWorkingHours, maxWorkingDays, fullTimeHours, partTimeHours, hourlyWage
      */
-    private static double calculateDailyWage(int hoursWorked, int hourlyWage) {
-        return hoursWorked * hourlyWage;
+    public EmpWageBuilder(int maxWorkingHours, int maxWorkingDays, int fullTimeHours, int partTimeHours, int hourlyWage) {
+        this.maxWorkingHours = maxWorkingHours;
+        this.maxWorkingDays = maxWorkingDays;
+        this.fullTimeHours = fullTimeHours;
+        this.partTimeHours = partTimeHours;
+        this.hourlyWage = hourlyWage;
+        this.totalWage = 0;
+        this.totalWorkingHours = 0;
+        this.totalWorkingDays = 0;
     }
-
     /*
-     * @name: generateAttendance
-     * @desc: generates the attendance status of an employee
-     * @i/p: none
-     * @return/ o/p: the attendance status of an employee (full time : 1, part time: 2, or absent: 0)
+     *@name: generateAttendance
+     *@description: Generates a random number between 1 and 3
+     *@return: 1 for Full Time, 2 for Part Time, 3 for Absent
      */
-    private static int generateAttendance() {  //making it static to access it from computeMonthlyWage bcz it is static
+    private int generateAttendance() {
         return new Random().nextInt(3) + 1;
     }
-
     /*
-     * @name: computeMonthlyWage
-     * @desc: computes the monthly wage of an employee
-     * @i/p: maxWorkingHours - the maximum working hours per month
-     *       maxWorkingDays - the maximum working days per month
-     *       fullTimeHours - the number of hours for full-time work
-     *       partTimeHours - the number of hours for part-time work
-     *       hourlyWage - the hourly wage for the employee
-     * @return/ o/p: none
+     *@name: calculateDailyWage
+     *@description: Calculates the daily wage of the employee
+     *@param: hoursWorked
+     *@return: dailyWage
      */
-    private static void computeMonthlyWage(int maxWorkingHours, int maxWorkingDays,
-                                           int fullTimeHours, int partTimeHours, int hourlyWage) {
-        double totalWage = 0;
-        int totalWorkingHours = 0;
-        int totalWorkingDays = 0;
-
+    private double calculateDailyWage(int hoursWorked) {
+        return hoursWorked * hourlyWage;
+    }
+    /*
+     *@name: computeMonthlyWage
+     *@description: Computes the monthly wage of the employee
+     */
+    public void computeMonthlyWage() {
         while (totalWorkingHours < maxWorkingHours && totalWorkingDays < maxWorkingDays) {
             int attendanceStatus = generateAttendance();
             int hoursWorked = 0;
@@ -60,27 +66,34 @@ public class employeeWageComp {
                     System.out.println("Day " + (totalWorkingDays + 1) + ": Employee is Absent");
             }
 
-            totalWage += calculateDailyWage(hoursWorked, hourlyWage);
+            totalWage += calculateDailyWage(hoursWorked);
             totalWorkingHours += hoursWorked;
             totalWorkingDays++;
         }
 
-        // Display the total monthly wage, working hours, and working days
         System.out.println("Total Monthly Employee Wage: " + totalWage);
         System.out.println("Total Working Hours: " + totalWorkingHours);
         System.out.println("Total Working Days: " + totalWorkingDays);
     }
+}
+
+public class employeeWageComp {
 
     public static void main(String[] args) {
-        System.out.println("Welcome to Employee Wage Computation Program");
         System.out.println("----------------------------------------------");
+        System.out.println(" Welcome to Employee Wage Computation Program ");
+        System.out.println("----------------------------------------------");
+
+        EmpWageBuilder companyA = new EmpWageBuilder(100, 20, 8, 4, 20);
         System.out.println("-----------------------------------------");
         System.out.println("| Monthly Wage Computation for Company A |");
         System.out.println("-----------------------------------------");
-        computeMonthlyWage(100, 20, 8, 4, 20);
+        companyA.computeMonthlyWage();
+
+        EmpWageBuilder companyB = new EmpWageBuilder(120, 25, 9, 5, 25);
         System.out.println("-----------------------------------------");
         System.out.println("| Monthly Wage Computation for Company B |");
         System.out.println("-----------------------------------------");
-        computeMonthlyWage(120, 25, 9, 5, 25);
+        companyB.computeMonthlyWage();
     }
 }
