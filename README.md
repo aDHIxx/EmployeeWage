@@ -11,3 +11,9 @@
 | UC6 | Custom Compare (Using compareTo) | [UC6](https://github.com/aDHIxx/EmployeeWage/blob/UC6_Monthly_Wage_Until_Max_Working_Days_or_Hours/employeeWage/src/employeeWageComp.java) |
 | UC7 | Refactor the Code to write a Class Method to Compute Employee Wage| [UC7](https://github.com/aDHIxx/EmployeeWage/tree/UC7_Refactor_to_Class_Method_To_Compute_Employee_Wage) |
 | UC8 | Compute Employee Wage for multiple companies| [UC8](https://github.com/aDHIxx/EmployeeWage/tree/UC8_Compute_Employee_Wage_For_Multiple_Companies) |
+| UC9 | Ability to save the Total Wage for Each Company | [UC9](https://github.com/aDHIxx/EmployeeWage/tree/UC9_Save_Total_Wage_For_Each_Company) |
+| UC10 | Check Employee is Present or Absent. | [UC10](https://github.com/aDHIxx/EmployeeWage/tree/UC10_Manage_Employee_Wage_Of_Multiple_Companies) |
+| UC11 | Compare Lines using equals | [UC11](https://github.com/aDHIxx/EmployeeWage/tree/UC_11_Interface_Approach_Manage_Employee_Wage_of_Multiple_Companies) |
+| UC12 | Custom Compare (Using compareTo) | [UC12](https://github.com/aDHIxx/EmployeeWage/tree/UC12_Refactor_to_ArrayList_to_Manage_Employee_Wage) |
+| UC13| Refactor the Code to write a Class Method to Compute Employee Wage| [UC13](https://github.com/aDHIxx/EmployeeWage/tree/UC13_Store_Daily_And_Total_Wage) |
+| UC14 | Compute Employee Wage for multiple companies| [UC14](https://github.com/aDHIxx/EmployeeWage/tree/UC14_Total_Wage_When_Queried) |
